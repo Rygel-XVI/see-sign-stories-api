@@ -16,19 +16,29 @@ class Channel < ApplicationRecord
       if ((c.created_at === c.updated_at) || (Time.now.utc - c.updated_at > 61200))
 
         # do request to update this channel and videos
-        c.update_videos
+        c.update_channel
       end
     end
 
   end
 
-  def update_videos
+  def update_channel
     cid = self.channel_id
-    channel = HTTP.get("https://www.googleapis.com/youtube/v3/search?key=#{ENV["TEST_API"]}&channelId=#{cid}&part=snippet,id&type=video&maxResults=50")
+    channel = HTTP.get("https://www.googleapis.com/youtube/v3/search?key=#{ENV["TEST_API"]}&channelId=#{cid}&part=snippet,id&type=video&maxResults=50").parse
 
+    videos = channel["items"]
     binding.pry
 
-    # channel.parse gives json
+    # call Video class method on each json video object and update.
+    # If successful update the channel info
+
+
+    # change this to passing in the json array?
+    videos.each do |video|
+      Video.update_or_create(video)
+    end
+
+
   end
 
 
