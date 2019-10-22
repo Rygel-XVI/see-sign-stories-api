@@ -1,44 +1,61 @@
 class Channel < ApplicationRecord
   has_many :videos
 
-  def self.update_if_needed
 
-    # in the future if there is more than one channel will make it a string and convert it into an array of id's to manipulate
-    # binding.pry
-    channels = [ENV['CHANNEL_ID']]
+
+  def self.get_or_create
+    channel_ids = Channel.get_and_format_channel_ids
+
+    channels = channel_ids.map do |cid|
+
+      channel = Channel.find_by(channel_id: cid)
+
+      # if channel DNE then create and call update on it else call update_if_needed to find out if it needs updating.
+      if (channel == nil)
+        binding.pry
+        c = Channel.new(channel_id: cid)
+        c.update_channel if (c.save)
+
+      else
+        c.update_if_needed
+      end
+
+    end
 
     channels.each do |channel|
-
-      # find or create the channel
-      c = Channel.find_or_create_by(channel_id: channel)
-
-      # if it has not been updated in 24 hrs or is newly created
-      if ((c.created_at === c.updated_at) || (Time.now.utc - c.updated_at > 61200))
-
-        # do request to update this channel and videos
-        c.update_channel
-      end
+      channel.update_if_needed
     end
 
   end
+
+  # if there are more channel ids in the future we will parse them here
+  def self.get_and_format_channel_ids
+    [ENV['CHANNEL_ID']]
+  end
+
+
+
+  def update_if_needed
+
+      if (Time.now.utc - self.updated_at > 61200)
+
+        # do request to update this channel and videos
+        self.update_channel
+      end
+  end
+
 
   def update_channel
     cid = self.channel_id
     channel = HTTP.get("https://www.googleapis.com/youtube/v3/search?key=#{ENV["TEST_API"]}&channelId=#{cid}&part=snippet,id&type=video&maxResults=50").parse
 
     videos = channel["items"]
-    binding.pry
 
-    # call Video class method on each json video object and update.
-    # If successful update the channel info
-
-
-    # change this to passing in the json array?
-    videos.each do |video|
-      Video.update_or_create(video)
+    video_ids = videos.map do |video|
+      video["id"]["videoId"]
     end
 
-
+    Video.update_by_id(video_ids)
   end
 
 
