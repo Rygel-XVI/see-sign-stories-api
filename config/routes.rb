@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
 
       get "videos/index", to: "videos#index"
-      put "channels/update", to: "channels#update"
+      get "channel/index", to: "channel#index"
 
   end
 

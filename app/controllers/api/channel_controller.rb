@@ -9,7 +9,7 @@ class Api::ChannelController < ApplicationController
 #     call find_or_create on each vid  || update each vid
             # update each vid can add update if needed on vid in future if needed
 
-  def update
+  def index
     channels = Channel.get_or_create
     redirect_to video_url
   end
