@@ -1,10 +1,13 @@
-class VideoController < ApplicationController
+class Api::VideoController < ApplicationController
 
 
 # serves videos from db
 
   def index
-    videos = Video.all
+    puts "HERE"
+    @videos = Video.all
+    binding.pry
+    render json: @videos
   end
 
 end

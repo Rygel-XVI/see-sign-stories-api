@@ -10,8 +10,16 @@ class Api::ChannelController < ApplicationController
             # update each vid can add update if needed on vid in future if needed
 
   def index
-    channels = Channel.get_or_create
-    redirect_to video_url
+    Channel.update_or_create
+    @channels = Channel.all
+
+    @channels.each do |channel|
+      if (channel.update_needed?)
+        channel.update_channel
+      end
+    end
+    redirect_to api_video_index_path
   end
+
 
 end

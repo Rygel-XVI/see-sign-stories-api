@@ -3,7 +3,7 @@ class Channel < ApplicationRecord
 
 
 
-  def self.get_or_create
+  def self.update_or_create
     channel_ids = Channel.get_and_format_channel_ids
 
     channels = channel_ids.map do |cid|
@@ -12,19 +12,19 @@ class Channel < ApplicationRecord
 
       # if channel DNE then create and call update on it else call update_if_needed to find out if it needs updating.
       if (channel == nil)
-        binding.pry
+
         c = Channel.new(channel_id: cid)
         c.update_channel if (c.save)
 
-      else
-        c.update_if_needed
+      # else
+      #   c.update_if_needed
       end
 
     end
-
-    channels.each do |channel|
-      channel.update_if_needed
-    end
+    #
+    # channels.each do |channel|
+    #   channel.update_if_needed
+    # end
 
   end
 
@@ -35,13 +35,12 @@ class Channel < ApplicationRecord
 
 
 
-  def update_if_needed
-
-      if (Time.now.utc - self.updated_at > 61200)
-
-        # do request to update this channel and videos
-        self.update_channel
-      end
+# currently updates once every 24hrs
+  def update_needed?
+    Time.now.utc - self.updated_at > 61200 ? true : false
+      # do request to update this channel and videos
+      # self.update_channel
+    # end
   end
 
 
