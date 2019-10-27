@@ -3,29 +3,45 @@ class Channel < ApplicationRecord
 
 
 
-  def self.update_or_create
+  # def self.update_or_create
+  #   channel_ids = Channel.get_and_format_channel_ids
+  #
+  #   channels = channel_ids.map do |cid|
+  #
+  #     channel = Channel.find_by(channel_id: cid)
+  #
+  #     # if channel DNE then create and call update on it else call update_if_needed to find out if it needs updating.
+  #     if (channel == nil)
+  #
+  #       c = Channel.new(channel_id: cid)
+  #       c.update_channel if (c.save)
+  #
+  #     end
+  #
+  #   end
+  #
+  # end
+
+
+  def self.channels_to_update
+    Channel.check_for_new_channels
+    Channel.all.each do |channel|
+      channel.update_channel if channel.update_needed?
+    end
+    # Channel.all.filter{|c| c.update_neefded? }
+  end
+
+# returns array of channels
+  def self.check_for_new_channels
     channel_ids = Channel.get_and_format_channel_ids
-
-    channels = channel_ids.map do |cid|
-
+    channel_ids.map do |cid|
       channel = Channel.find_by(channel_id: cid)
 
-      # if channel DNE then create and call update on it else call update_if_needed to find out if it needs updating.
       if (channel == nil)
-
-        c = Channel.new(channel_id: cid)
-        c.update_channel if (c.save)
-
-      # else
-      #   c.update_if_needed
+        c = Channel.create(channel_id: cid)
       end
 
     end
-    #
-    # channels.each do |channel|
-    #   channel.update_if_needed
-    # end
-
   end
 
   # if there are more channel ids in the future we will parse them here
@@ -33,16 +49,17 @@ class Channel < ApplicationRecord
     [ENV['CHANNEL_ID']]
   end
 
-
-
-# currently updates once every 24hrs
+# currently updates once every 24hrs or after creation
   def update_needed?
-    Time.now.utc - self.updated_at > 61200 ? true : false
-      # do request to update this channel and videos
-      # self.update_channel
-    # end
+    self.updated_at == self.created_at || Time.now.utc - self.updated_at > 61200
   end
 
+
+
+# this should do
+#   => api request to pull the video ids from the channel
+#   => api request to pull the video information from the video ids
+  # => return the info to the controller to update utilizing params
 
   def update_channel
     cid = self.channel_id
@@ -61,5 +78,4 @@ class Channel < ApplicationRecord
 end
 
 
-# HTTP.get("https://github.com").body
 # look into async calls ruby rails em-http-request

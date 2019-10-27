@@ -6,8 +6,7 @@ class CreateVideos < ActiveRecord::Migration[6.0]
       t.string :embed_id
       t.decimal :ar_lvl_high
       t.decimal :ar_lvl_low
-      t.integer :grade_high
-      t.integer :grade_low
+      t.string :grade
 
       t.timestamps
     end

@@ -10,16 +10,22 @@ class Api::ChannelController < ApplicationController
             # update each vid can add update if needed on vid in future if needed
 
   def index
-    Channel.update_or_create
+    # Channel.update_or_create
     @channels = Channel.all
-
-    @channels.each do |channel|
-      if (channel.update_needed?)
-        channel.update_channel
-      end
-    end
-    redirect_to api_video_index_path
+    # binding.pry
+    render json: @channels
   end
+
+# checks for new channels
+# creates an array of channels needing update
+# updates each channel via params
+# redirects to serve via a different route
+  def update
+    Channel.channels_to_update
+  end
+
+
+# whitelist params and nested params for videos
 
 
 end
