@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  adapter: postgresql
   database: see_sign_stories_rails_api_production
   username: see_sign_stories_rails_api
   password: <%= ENV['SEE_SIGN_STORIES_RAILS_API_DATABASE_PASSWORD'] %>
