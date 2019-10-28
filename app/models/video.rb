@@ -26,7 +26,7 @@ class Video < ApplicationRecord
         description: json["snippet"]["description"],
         ar_lvl_high: ar_level[0],
         ar_lvl_low: ar_level[1],
-        grade: grade,
+        grade: grade
       )
     end
 
