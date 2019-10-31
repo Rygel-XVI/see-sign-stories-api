@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_020305) do
     t.decimal "ar_lvl_high"
     t.decimal "ar_lvl_low"
     t.string "grade"
+    t.boolean "story_of_week", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

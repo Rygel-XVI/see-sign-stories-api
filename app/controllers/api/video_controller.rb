@@ -8,12 +8,14 @@ class Api::VideoController < ApplicationController
     render json: @videos
   end
 
+# manually adding a video from the front-end
   def new
     @video = Video.new(video_params)
     @video.save
     redirect_to api_video_index_path
   end
 
+# manually update a single video from the front-end
   def update
     binding.pry
   end
@@ -21,10 +23,6 @@ class Api::VideoController < ApplicationController
   def destroy
 
   end
-
-  # def update
-  #   Video.update_all
-  # end
 
   private
 

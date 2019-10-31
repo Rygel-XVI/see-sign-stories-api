@@ -7,6 +7,7 @@ class CreateVideos < ActiveRecord::Migration[6.0]
       t.decimal :ar_lvl_high
       t.decimal :ar_lvl_low
       t.string :grade
+      t.boolean :story_of_week, default: false
 
       t.timestamps
     end

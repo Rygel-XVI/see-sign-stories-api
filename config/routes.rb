@@ -5,11 +5,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :video, :channel, only: [:index, :new, :update, :destroy]
-
-      # get "video/index", to: "video#index"
-      # get "channel/index", to: "channel#index"
-      # put "channel/update", to: "channel#update"
-
   end
 
 end
