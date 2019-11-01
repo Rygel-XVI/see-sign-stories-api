@@ -62,6 +62,7 @@ class Channel < ApplicationRecord
   # => return the info to the controller to update utilizing params
 
   def update_channel
+    binding.pry
     cid = self.channel_id
     channel = HTTP.get("https://www.googleapis.com/youtube/v3/search?key=#{ENV["TEST_API"]}&channelId=#{cid}&part=snippet,id&type=video&maxResults=50").parse
 

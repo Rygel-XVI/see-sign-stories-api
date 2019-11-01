@@ -3,6 +3,7 @@ class Video < ApplicationRecord
 
 
   def self.update_by_id(video_ids)
+    binding.pry
 
     video_ids_string = video_ids.join(",")
 
@@ -24,8 +25,8 @@ class Video < ApplicationRecord
 
       self.update(title: json["snippet"]["title"] ,
         description: json["snippet"]["description"],
-        ar_lvl_high: ar_level[0],
-        ar_lvl_low: ar_level[1],
+        ar_lvl_low: ar_level[0],
+        ar_lvl_high: ar_level[1],
         grade: grade
       )
     end
