@@ -10,7 +10,7 @@ class Api::ChannelController < ApplicationController
             # update each vid can add update if needed on vid in future if needed
 
   def index
-    # Channel.update_or_create
+    Channel.update_channel if Channel.updated_at > DateTime.now - 1
     @channels = Channel.all
     # binding.pry
     render json: @channels

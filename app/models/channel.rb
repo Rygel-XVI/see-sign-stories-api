@@ -21,6 +21,13 @@ class Channel < ApplicationRecord
   #   end
   #
   # end
+  
+  def self.update_channel
+    videos = HTTP.get(`https://www.googleapis.com/youtube/v3/search?key=#{TEST_API}&channelId=#{CHANNEL_ID}&part=snippet,id&type=video&maxResults=50`).parse
+    
+    ## setup postgres on computer
+    binding.pry
+  end
 
 
   def self.channels_to_update
