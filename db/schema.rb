@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2019_10_09_020305) do
     t.string "title"
     t.string "description"
     t.string "embed_id"
-    t.decimal "ar_lvl_high"
-    t.decimal "ar_lvl_low"
+    t.float "ar_lvl_high"
+    t.float "ar_lvl_low"
     t.string "grade"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
