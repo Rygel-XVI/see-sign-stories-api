@@ -9,8 +9,14 @@ class ChannelController < ApplicationController
 #     call find_or_create on each vid  || update each vid
             # update each vid can add update if needed on vid in future if needed
 
+
+# currently only implementing with one channel.
+# future plans:
+#   depending on what is called will check the appropriate channel only
+#   will update via api call based on when channel was last updated
+#   add flags to exclude api call update
   def index
-    Channel.update_channel if Video.all.size == 0 || Video.first.updated_at > DateTime.now - 1
+    Channel.update_channel if Video.all.size == 0 || Video.first.updated_at.to_datetime < DateTime.now - 1
     @videos = Video.all
 
     render json: @videos
@@ -23,9 +29,5 @@ class ChannelController < ApplicationController
   def update
     Channel.channels_to_update
   end
-
-
-# whitelist params and nested params for videos
-
 
 end

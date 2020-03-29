@@ -48,9 +48,9 @@ class Channel < ApplicationRecord
       }
       
       vid = Video.find_by(embed_id: embed_id)
-      
       if vid
         vid.update(video_attributes)
+        vid.touch
       else
         Video.create(video_attributes)
       end
