@@ -1,4 +1,4 @@
-class Api::ChannelController < ApplicationController
+class ChannelController < ApplicationController
 
 # if channels need update then update else redirect to serve videos
 
@@ -10,10 +10,10 @@ class Api::ChannelController < ApplicationController
             # update each vid can add update if needed on vid in future if needed
 
   def index
-    # Channel.update_or_create
-    @channels = Channel.all
-    # binding.pry
-    render json: @channels
+    Channel.update_channel if Video.all.size == 0 || Video.first.updated_at > DateTime.now - 1
+    @videos = Video.all
+
+    render json: @videos
   end
 
 # checks for new channels
