@@ -23,7 +23,7 @@ class Channel < ApplicationRecord
   # end
   
   def self.update_channel    
-    url = "https://www.googleapis.com/youtube/v3/search?key=#{process.env["TEST_API"]}&channelId=#{process.env["CHANNEL_ID"]}&part=snippet,id&type=video&maxResults=50"
+    url = "https://www.googleapis.com/youtube/v3/search?key=#{ENV["TEST_API"]}&channelId=#{ENV["CHANNEL_ID"]}&part=snippet,id&type=video&maxResults=50"
     
     response = HTTP.get(url).parse
     
