@@ -1,4 +1,4 @@
-class Api::VideoController < ApplicationController
+class VideoController < ApplicationController
 
 
 # serves videos from db
