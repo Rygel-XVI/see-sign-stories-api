@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_020305) do
+ActiveRecord::Schema.define(version: 2019_10_09_013409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,24 +21,15 @@ ActiveRecord::Schema.define(version: 2019_10_09_020305) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "genres", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "video_genres", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "videos", force: :cascade do |t|
+    t.string "embed_id"
     t.string "title"
     t.string "description"
-    t.string "embed_id"
     t.float "ar_lvl_high"
     t.float "ar_lvl_low"
     t.string "grade"
+    t.boolean "is_chapter_book"
+    t.integer "chapter"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
