@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 2019_10_09_013409) do
     t.string "grade"
     t.boolean "is_chapter_book"
     t.integer "chapter"
-    t.string "tags"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

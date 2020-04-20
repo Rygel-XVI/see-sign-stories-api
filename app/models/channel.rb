@@ -32,25 +32,26 @@ class Channel < ApplicationRecord
   
   def self.parse_response(response)
     videos = []
-    
     response.each do |video|
 
       embed_id = video.dig('id','videoId')
       tags = fetch_video_tags(embed_id)
 
-      video_attributes = {
-        title: tags[:title],
-        description: tags[:description],
-        embed_id: embed_id,
-        ar_lvl_high: tags[:ar_lvl_high],
-        ar_lvl_low: tags[:ar_lvl_low],
-        grade: tags[:grade]
-      }
+      # video_attributes = {
+      #   title: tags[:title],
+      #   description: tags[:description],
+      #   embed_id: embed_id,
+      #   ar_lvl_high: tags[:ar_lvl_high],
+      #   ar_lvl_low: tags[:ar_lvl_low],
+      #   grade: tags[:grade],
+      # }
+      
+      video_attributes = tags.merge({embed_id:embed_id})
       
       vid = Video.find_by(embed_id: embed_id)
-      
       if vid
         vid.update(video_attributes)
+        vid.touch
       else
         Video.create(video_attributes)
       end
@@ -67,16 +68,20 @@ class Channel < ApplicationRecord
     ar_lvl_low, ar_lvl_high = parse_ar_lvls(response["tags"])
     
     grade = response['tags']&.find{|tag| tag.match(/^Grade/)}
-
+    
+    chapter = response['tags'].find{|tag| tag.match(/^Chapter/)} ? response['tags'].find{|tag| tag.match(/^Chapter/)}.split(' ')[1] : nil
+                          
     {
       ar_lvl_high: ar_lvl_high,
       ar_lvl_low: ar_lvl_low,
       grade: grade,
       title: response['title'],
-      description: response['description']
+      description: response['description'],
+      is_chapter_book: !!response['tags'].find{|tag| tag.match(/^Chapter/)},
+      chapter: chapter.presence
     }
     
-  end
+  end  
   
   
   def self.parse_ar_lvls(tags)

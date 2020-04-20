@@ -10,8 +10,6 @@ class CreateVideos < ActiveRecord::Migration[6.0]
       t.boolean "is_chapter_book"
       t.integer "chapter"
       
-      t.string "tags"
-
       t.timestamps
     end
   end
